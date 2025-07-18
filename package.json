@@ -1,0 +1,40 @@
+{
+  "name": "assignment2-user-login-service",
+  "version": "1.0.0",
+  "description": "Assignment 2: User Login Service MVP - Go backend with React frontend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "make dev",
+    "build": "make build",
+    "start": "make run-backend",
+    "frontend": "make run-frontend",
+    "backend": "make run-backend",
+    "test": "make test-api",
+    "setup": "make setup-backend && make setup-frontend"
+  },
+  "keywords": [
+    "go",
+    "gin",
+    "react",
+    "antd",
+    "mobx",
+    "jwt",
+    "bcrypt",
+    "login",
+    "authentication"
+  ],
+  "author": "Assignment 2 Developer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/assignment2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/assignment2/issues"
+  },
+  "homepage": "https://github.com/yourusername/assignment2#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "go": ">=1.21.0"
+  }
+}

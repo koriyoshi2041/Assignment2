@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
+import { API_URLS, ENV_INFO } from '../config/api';
 
 class AuthStore {
   token = null;
@@ -12,6 +13,10 @@ class AuthStore {
     makeAutoObservable(this);
     // Check for existing token in localStorage
     this.initializeAuth();
+    // 在开发环境打印当前API配置
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔐 AuthStore initialized with API config:', ENV_INFO);
+    }
   }
 
   initializeAuth() {
@@ -29,7 +34,7 @@ class AuthStore {
     this.setError(null);
     
     try {
-      const response = await axios.post('http://localhost:8080/user/login', {
+      const response = await axios.post(API_URLS.LOGIN, {
         username,
         password
       });
@@ -51,7 +56,7 @@ class AuthStore {
     if (!this.token) return;
     
     try {
-      const response = await axios.get('http://localhost:8080/user/info', {
+      const response = await axios.get(API_URLS.USER_INFO, {
         headers: {
           Authorization: `Bearer ${this.token}`
         }
