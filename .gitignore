@@ -35,8 +35,9 @@ way.md
 # Teaching and reference materials
 reference-project/
 GoBlogAssignment2/
-*.md
-!README.md
+assignment2.md
+user_login_service_architecture_apifoxadded.md
+way.md
 
 # Log files
 *.log
