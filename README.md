@@ -1,49 +1,59 @@
 # User Login Service MVP
 
-[![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org/)
+[![Go Version](https://img.shields.io/badge/Go-1.24+-blue.svg)](https://golang.org/)
 [![Node Version](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![React Version](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
+[![React Version](https://img.shields.io/badge/React-19+-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A modern, secure user authentication system built with Go and React, featuring JWT token-based authentication, responsive UI, and comprehensive API documentation.
+A modern, secure user authentication system built with Go and React, featuring JWT token-based authentication, TypeScript for type safety, auto-generated API client, and comprehensive APIFox integration.
 
 ## 🚀 Features
 
 - **Secure Authentication**: JWT token-based authentication with bcrypt password hashing
+- **TypeScript Integration**: Full TypeScript support with auto-generated API client
+- **Code Generation**: OpenAPI Generator for automated TypeScript API client
 - **Modern UI**: Responsive React interface with Ant Design components
 - **Real-time State Management**: MobX for reactive state management
 - **Protected Routes**: Client-side route protection with automatic redirects
 - **API Documentation**: OpenAPI 3.0+ specification with APIFox integration
 - **CORS Support**: Cross-origin resource sharing enabled
-- **Mock Support**: Development with mock APIs for parallel development
+- **Type Safety**: Complete type safety from API to UI components
 
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Go 1.21+** - High-performance backend service
+- **Go 1.24+** - High-performance backend service
 - **Gin Framework** - Fast HTTP web framework
 - **JWT** - JSON Web Token for authentication
 - **bcrypt** - Password hashing and verification
 
 ### Frontend
-- **React 18+** - Modern JavaScript UI library
+- **React 19+** - Modern JavaScript UI library
+- **TypeScript 5.0+** - Static type checking and enhanced developer experience
 - **Ant Design 5** - Enterprise-class UI components
 - **MobX** - Simple, scalable state management
 - **React Router v7** - Declarative routing
-- **Axios** - Promise-based HTTP client
+- **Generated API Client** - Auto-generated TypeScript client from OpenAPI spec
+- **pnpm** - Fast, disk space efficient package manager
 - **Vite** - Fast build tool and development server
 
-### DevOps & Tools
+### API & Code Generation
 - **OpenAPI 3.0+** - API specification and documentation
-- **APIFox** - API development and testing platform
+- **OpenAPI Generator** - Automated TypeScript API client generation
+- **APIFox** - API design, testing, and code generation platform
+
+### DevOps & Tools
 - **Make** - Build automation
 - **Git** - Version control
+- **TypeScript Compiler** - Type checking and compilation
 
 ## 📋 Prerequisites
 
-- Go 1.21 or higher
+- Go 1.24 or higher
 - Node.js 18.0 or higher
-- npm or pnpm package manager
+- pnpm package manager
+- OpenAPI Generator CLI (automatically installed)
 
 ## 🚀 Quick Start
 
@@ -64,8 +74,8 @@ The backend server will start on `http://localhost:8080`
 ### 3. Start the frontend development server
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 The frontend application will be available at `http://localhost:5173`
 
@@ -84,19 +94,24 @@ Assignment2/
 │   ├── utils.go         # Utility functions
 │   ├── go.mod           # Go module dependencies
 │   └── go.sum           # Go module checksums
-├── frontend/            # React frontend application
+├── frontend/            # React TypeScript frontend application
 │   ├── src/
-│   │   ├── components/  # React components
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── WelcomePage.jsx
-│   │   │   └── ProtectedRoute.jsx
-│   │   ├── stores/      # MobX stores
-│   │   │   └── authStore.js
-│   │   ├── config/      # Configuration files
-│   │   │   └── api.js
-│   │   ├── App.jsx      # Main application component
-│   │   └── main.jsx     # Application entry point
+│   │   ├── api/         # Auto-generated TypeScript API client
+│   │   │   ├── apis/    # API endpoint implementations
+│   │   │   ├── models/  # TypeScript type definitions
+│   │   │   └── runtime.ts
+│   │   ├── components/  # React TypeScript components
+│   │   │   ├── LoginPage.tsx
+│   │   │   ├── WelcomePage.tsx
+│   │   │   └── ProtectedRoute.tsx
+│   │   ├── stores/      # MobX stores with TypeScript
+│   │   │   └── authStore.ts
+│   │   ├── App.tsx      # Main application component
+│   │   └── main.tsx     # Application entry point
+│   ├── gen_api.sh       # API client generation script
+│   ├── openapitools.json # OpenAPI Generator configuration
 │   ├── package.json     # Frontend dependencies
+│   ├── tsconfig.json    # TypeScript configuration
 │   └── vite.config.js   # Vite configuration
 ├── openapi.yml          # OpenAPI specification
 ├── Makefile            # Build automation
@@ -126,14 +141,30 @@ make build-frontend   # Build frontend for production
 make clean           # Clean build artifacts
 ```
 
-### Environment Configuration
-The application supports multiple environments through `frontend/src/config/api.js`:
+### API Client Generation
+The project uses OpenAPI Generator to automatically generate TypeScript API client:
 
-```javascript
-const CURRENT_ENV = ENV.REAL_API;      // Production API
-// const CURRENT_ENV = ENV.LOCAL_MOCK;  // Local mock server
-// const CURRENT_ENV = ENV.CLOUD_MOCK;  // Cloud mock server
+```bash
+cd frontend
+./gen_api.sh          # Generate TypeScript API client from OpenAPI spec
 ```
+
+This generates:
+- **API Classes**: `AuthenticationApi`, `UserInformationApi`
+- **Type Definitions**: `LoginUserRequest`, `LoginUser200Response`, etc.
+- **Runtime**: HTTP client with proper error handling
+
+### TypeScript Development
+```bash
+cd frontend
+pnpm run build        # Build with TypeScript compilation
+npx tsc --noEmit      # Type checking only
+```
+
+### Environment Configuration
+The application automatically detects environment:
+- **Development**: `http://localhost:8080`
+- **Production**: Configurable API endpoint
 
 ## 🧪 Testing
 
@@ -151,15 +182,29 @@ const CURRENT_ENV = ENV.REAL_API;      // Production API
 
 ## 📊 APIFox Integration
 
-This project includes comprehensive APIFox integration for:
-- **API Documentation**: Auto-generated from OpenAPI specification
-- **Mock Services**: Parallel development with mock APIs
-- **Testing**: Automated API testing and validation
-- **Team Collaboration**: Shared API specifications and test cases
+This project demonstrates proper APIFox workflow:
 
-Mock Service URLs:
-- Local: `http://127.0.0.1:4523/m1/6796621-0-default`
-- Cloud: `https://mock.apifox.cn/m1/6796621-0-default`
+### 1. API Design & Documentation
+- Import `openapi.yml` into APIFox
+- Complete API specification with examples
+- Auto-generated interactive documentation
+
+### 2. Code Generation
+- Export OpenAPI JSON from APIFox
+- Use OpenAPI Generator CLI to generate TypeScript client
+- Automated type-safe API integration
+
+### 3. Mock Services & Testing
+- APIFox mock services for parallel development
+- Automated API testing and validation
+- Team collaboration through shared specifications
+
+### Workflow
+```bash
+APIFox Design → OpenAPI Export → OpenAPI Generator → TypeScript Client
+```
+
+This replaces manual API coding with automated, type-safe client generation.
 
 ## 🚢 Deployment
 
@@ -173,7 +218,7 @@ go build -o server main.go
 ### Frontend Deployment
 ```bash
 cd frontend
-npm run build
+pnpm run build
 # Deploy the dist/ folder to your static hosting service
 ```
 
@@ -201,4 +246,4 @@ For questions or support, please open an issue in the GitHub repository.
 
 ---
 
-**Note**: This is a educational project demonstrating modern web development practices with Go and React.
+**Note**: This is an educational project demonstrating modern web development practices with Go, React, TypeScript, and proper APIFox workflow with automated code generation.

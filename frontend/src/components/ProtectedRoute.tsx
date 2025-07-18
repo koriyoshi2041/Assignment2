@@ -3,7 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { Navigate, useLocation } from 'react-router-dom';
 import { authStore } from '../stores/authStore';
 
-const ProtectedRoute = observer(({ children }) => {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = observer(({ children }) => {
   const location = useLocation();
 
   if (!authStore.isAuthenticated) {
@@ -11,7 +15,7 @@ const ProtectedRoute = observer(({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children;
+  return <>{children}</>;
 });
 
 export default ProtectedRoute;

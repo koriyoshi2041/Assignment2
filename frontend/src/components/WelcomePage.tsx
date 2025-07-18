@@ -7,7 +7,7 @@ import { authStore } from '../stores/authStore';
 
 const { Title, Text } = Typography;
 
-const WelcomePage = observer(() => {
+const WelcomePage: React.FC = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const WelcomePage = observer(() => {
     }
   }, [navigate]);
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     authStore.logout();
     navigate('/login');
   };
@@ -98,7 +98,7 @@ const WelcomePage = observer(() => {
               <Text type="secondary" style={{ fontSize: 12 }}>
                 <strong>系统信息:</strong><br />
                 Assignment 2: User Login Service MVP<br />
-                技术栈: React + Ant Design + MobX + Go + Gin + JWT
+                技术栈: React + Ant Design + MobX + Go + Gin + JWT + TypeScript
               </Text>
             </div>
           </Space>

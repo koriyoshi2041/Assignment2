@@ -7,7 +7,7 @@ import WelcomePage from './components/WelcomePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import 'antd/dist/reset.css';
 
-function App() {
+const App: React.FC = () => {
   return (
     <ConfigProvider locale={zhCN}>
       <Router>
@@ -27,6 +27,6 @@ function App() {
       </Router>
     </ConfigProvider>
   );
-}
+};
 
-export default App
+export default App;

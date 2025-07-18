@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Card, Typography, Alert, Space } from 'antd';
+import { Form, Input, Button, Card, Typography, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { authStore } from '../stores/authStore';
 
 const { Title, Text } = Typography;
 
-const LoginPage = observer(() => {
-  const [form] = Form.useForm();
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
+
+const LoginPage: React.FC = observer(() => {
+  const [form] = Form.useForm<LoginFormValues>();
   const navigate = useNavigate();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: LoginFormValues): Promise<void> => {
     const { username, password } = values;
     const success = await authStore.login(username, password);
     
