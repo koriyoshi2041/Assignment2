@@ -26,11 +26,13 @@ yarn-error.log*
 # Documentation files
 APIFOX_EXPLANATION.md
 APIFOX_GUIDE.md
+APIFOX_AUTO_CODE_GENERATION_GUIDE.md
 MOCK_SETUP.md
 START_GUIDE.md
 assignment2.md
 user_login_service_architecture_apifoxadded.md
 way.md
+way2.md
 
 # Teaching and reference materials
 reference-project/
@@ -65,6 +67,11 @@ Thumbs.db
 *.test
 *.out
 go.work
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
 
 # Logs
 *.log

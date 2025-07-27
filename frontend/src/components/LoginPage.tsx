@@ -21,7 +21,7 @@ const LoginPage: React.FC = observer(() => {
     const success = await authStore.login(username, password);
     
     if (success) {
-      navigate('/welcome');
+      navigate('/blog');
     }
   };
 
@@ -46,7 +46,7 @@ const LoginPage: React.FC = observer(() => {
             用户登录
           </Title>
           <Text type="secondary">
-            Assignment 2: User Login Service
+            Assignment 3: Blog System
           </Text>
         </div>
 

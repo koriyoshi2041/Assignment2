@@ -1,15 +1,17 @@
 openapi: 3.0.3
 info:
-  title: Assignment 2 - User Login Service API
-  version: 1.0.0
+  title: Assignment 3 - Blog System API
+  version: 2.0.0
   description: |
-    Assignment 2 用户登录服务 MVP - API规范文档
+    Assignment 3 Milestone 1 博客系统 MVP - API规范文档
     
-    这是一个基于 Go Gin 框架构建的用户认证服务，提供登录和用户信息获取功能。
+    这是一个基于 Go Gin 框架构建的博客系统，提供用户认证、博文创建和浏览功能。
     
     ## 特性
     - JWT token 认证
     - Bcrypt 密码加密
+    - GORM 数据库持久化
+    - 博文创建和列表
     - RESTful API 设计
     - CORS 支持
     
@@ -185,6 +187,114 @@ paths:
                   value:
                     error: User not found
 
+  /user/logout:
+    post:
+      summary: 用户登出
+      description: |
+        用户登出接口。客户端应清除本地存储的 JWT token。
+        服务端返回成功状态，实际的 token 失效由客户端处理。
+      operationId: logoutUser
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 登出成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+        '401':
+          description: 未授权访问
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /posts:
+    post:
+      summary: 创建博文
+      description: |
+        创建新的博文。需要用户登录认证，博文将关联到当前用户。
+      operationId: createPost
+      tags:
+        - Posts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                  description: 博文内容
+                  example: 这是我的第一篇博文！
+                  minLength: 1
+                  maxLength: 5000
+            examples:
+              sample_post:
+                summary: 示例博文
+                value:
+                  content: 今天学习了 GORM 和 Gin 框架，感觉很有趣！
+      responses:
+        '201':
+          description: 博文创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: 请求格式错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 未授权访问
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: 获取博文列表
+      description: |
+        获取所有博文的列表，按创建时间倒序排列（最新的在前）。
+        不需要认证，所有用户都可以浏览。
+      operationId: listPosts
+      tags:
+        - Posts
+      responses:
+        '200':
+          description: 成功获取博文列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostResponse'
+              examples:
+                posts_list:
+                  summary: 博文列表示例
+                  value:
+                    - id: 1
+                      content: 这是最新的博文内容
+                      author_nickname: 管理员小张
+                      created_at: "2024-01-15T10:30:00Z"
+                    - id: 2
+                      content: 之前的博文内容
+                      author_nickname: 用户小李
+                      created_at: "2024-01-14T15:20:00Z"
+
 components:
   schemas:
     ErrorResponse:
@@ -196,6 +306,32 @@ components:
           example: Invalid username or password
       required:
         - error
+
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 博文唯一标识符
+          example: 1
+        content:
+          type: string
+          description: 博文内容
+          example: 这是一篇示例博文内容
+        author_nickname:
+          type: string
+          description: 作者昵称
+          example: 管理员小张
+        created_at:
+          type: string
+          format: date-time
+          description: 创建时间
+          example: "2024-01-15T10:30:00Z"
+      required:
+        - id
+        - content
+        - author_nickname
+        - created_at
 
   securitySchemes:
     bearerAuth:
@@ -219,11 +355,15 @@ tags:
     description: 用户身份认证相关接口
   - name: User Information
     description: 用户信息获取相关接口
+  - name: Posts
+    description: 博文管理相关接口
 
 # APIFox 特定配置建议
 x-apifox-orders:
   - /user/login
   - /user/info
+  - /user/logout
+  - /posts
 
 x-apifox-environment:
   variables:

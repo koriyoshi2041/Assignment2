@@ -1,0 +1,27 @@
+package main
+
+import (
+	"fmt"
+	"golang.org/x/crypto/bcrypt"
+)
+
+func main() {
+	// Test current hashes
+	adminHash := "$2a$10$iHXigzaERhaHFeh8XC6q1OmP1VTt3gekLYW2Caun4ba4zQHXdLHwS"
+	userHash := "$2a$10$PFaDNFfwvVkcUZSFDtkS7u3ideIaki/zV2d7/rJiUHnmZrHwGknxO"
+	
+	// Test admin password
+	err1 := bcrypt.CompareHashAndPassword([]byte(adminHash), []byte("password123"))
+	fmt.Printf("Admin password test: %v\n", err1 == nil)
+	
+	// Test user1 password
+	err2 := bcrypt.CompareHashAndPassword([]byte(userHash), []byte("mypassword"))
+	fmt.Printf("User1 password test: %v\n", err2 == nil)
+	
+	// Generate new hashes
+	newAdminHash, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
+	newUserHash, _ := bcrypt.GenerateFromPassword([]byte("mypassword"), bcrypt.DefaultCost)
+	
+	fmt.Printf("New admin hash: %s\n", string(newAdminHash))
+	fmt.Printf("New user hash: %s\n", string(newUserHash))
+}
