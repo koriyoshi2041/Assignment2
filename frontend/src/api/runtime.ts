@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "http://localhost:8080".replace(/\/+$/, "");
+export const BASE_PATH = (import.meta.env.VITE_API_URL || "http://localhost:8080").replace(/\/+$/, "");
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path

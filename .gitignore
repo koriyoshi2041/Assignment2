@@ -27,12 +27,16 @@ yarn-error.log*
 APIFOX_EXPLANATION.md
 APIFOX_GUIDE.md
 APIFOX_AUTO_CODE_GENERATION_GUIDE.md
+CORRECT_APIFOX_WORKFLOW.md
 MOCK_SETUP.md
 START_GUIDE.md
 assignment2.md
 user_login_service_architecture_apifoxadded.md
 way.md
 way2.md
+way3.md
+DEPLOYMENT.md
+SIMPLE_DEPLOY_GUIDE.md
 
 # Teaching and reference materials
 reference-project/

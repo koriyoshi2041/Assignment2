@@ -30,8 +30,8 @@ type Claims struct {
 }
 
 var (
-	// JWT secret key - in production, this should be from environment variable
-	jwtSecret = []byte("your-secret-key-change-in-production")
+	// JWT secret key - configurable via environment variable
+	jwtSecret []byte
 	
 	// Global database instance
 	db *gorm.DB
@@ -131,6 +131,10 @@ func seedDatabase() {
 }
 
 func main() {
+	// Initialize JWT secret from environment variable
+	jwtSecretString := getEnvOrDefault("JWT_SECRET", "your-secret-key-change-in-production")
+	jwtSecret = []byte(jwtSecretString)
+	
 	// Initialize database
 	var err error
 	db, err = initDatabase()
@@ -150,9 +154,19 @@ func main() {
 	// Create Gin router
 	r := gin.Default()
 	
-	// CORS middleware
+	// CORS middleware - support both development and production origins
+	allowedOrigins := []string{"http://localhost:5173"} // Vite default port for development
+	
+	// Add production origins from environment variable
+	if productionOrigin := os.Getenv("ALLOWED_ORIGINS"); productionOrigin != "" {
+		origins := strings.Split(productionOrigin, ",")
+		for _, origin := range origins {
+			allowedOrigins = append(allowedOrigins, strings.TrimSpace(origin))
+		}
+	}
+	
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Vite default port
+		AllowOrigins:     allowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
